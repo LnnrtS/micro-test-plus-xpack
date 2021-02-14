@@ -55,9 +55,6 @@ message(STATUS "Build type: ${CMAKE_BUILD_TYPE}")
 message(STATUS "Project path: ${xpack_project_folder}")
 message(STATUS "Prefix path: ${CMAKE_PREFIX_PATH}")
 
-# Generate the compile_commands.json file to feed the indexer.
-set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
-
 if(PLATFORM_NAME STREQUAL "native")
   # No platform specific definitions so far.
 elseif(PLATFORM_NAME STREQUAL "stm32f4discovery")
