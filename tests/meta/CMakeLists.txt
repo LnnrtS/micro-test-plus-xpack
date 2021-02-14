@@ -122,7 +122,6 @@ set_target_properties(
 
   PROPERTIES
     OUTPUT_NAME "unit-test"
-    CXX_EXTENSIONS OFF
 )
 
 # Source folders.
@@ -201,7 +200,6 @@ set_target_properties(
 
   PROPERTIES
     OUTPUT_NAME "sample-test"
-    CXX_EXTENSIONS OFF
 )
 
 # Application sources.
