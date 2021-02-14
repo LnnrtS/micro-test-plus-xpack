@@ -287,31 +287,15 @@ endif()
 
 enable_testing()
 
-if(PLATFORM_NAME STREQUAL "native")
+add_test(
+  NAME "unit-test"
+  COMMAND unit-test-app
+)
 
-  add_test(
-    NAME "unit-test"
-    COMMAND unit-test
-  )
-
-  add_test(
-    NAME "sample-test"
-    COMMAND sample-test 1 2 3
-  )
-
-elseif(PLATFORM_NAME STREQUAL "stm32f4discovery")
-
-  add_test(
-    NAME "unit-test"
-    COMMAND unit-test-app --semihosting-cmdline unit-test
-  )
-
-  add_test(
-    NAME "sample-test"
-    COMMAND sample-test-app --semihosting-cmdline sample-test 1 2 3
-  )
-
-endif()
+add_test(
+  NAME "sample-test"
+  COMMAND sample-test-app
+)
 
 # -----------------------------------------------------------------------------
 
