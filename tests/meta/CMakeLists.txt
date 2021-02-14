@@ -72,8 +72,23 @@ elseif(PLATFORM_NAME STREQUAL "stm32f4discovery")
   include("${xpack_project_folder}/xpacks/micro-os-plus-semihosting/meta/xpack-helper.cmake")
   include("${xpack_project_folder}/xpacks/micro-os-plus-startup/meta/xpack-helper.cmake")
   include("${xpack_project_folder}/xpacks/micro-os-plus-version/meta/xpack-helper.cmake")
+
 else()
   message(FATAL_ERROR, "Unsupported PLATFORM_NAME")
+endif()
+
+#------------------------------------------------------------------------------
+
+if(PLATFORM_NAME STREQUAL "stm32f4discovery")
+  set(CMAKE_CROSSCOMPILING_EMULATOR
+    qemu-system-gnuarmeclipse
+    --verbose
+    --board STM32F4-Discovery
+    -d unimp,guest_errors
+    --nographic
+    --semihosting-config enable=on,target=native
+    --image
+  )
 endif()
 
 
@@ -288,12 +303,12 @@ elseif(PLATFORM_NAME STREQUAL "stm32f4discovery")
 
   add_test(
     NAME "unit-test"
-    COMMAND qemu-system-gnuarmeclipse --verbose --board STM32F4-Discovery -d unimp,guest_errors --nographic --image unit-test.elf --semihosting-config enable=on,target=native --semihosting-cmdline unit-test
+    COMMAND unit-test-app --semihosting-cmdline unit-test
   )
 
   add_test(
     NAME "sample-test"
-    COMMAND qemu-system-gnuarmeclipse --verbose --board STM32F4-Discovery -d unimp,guest_errors --nographic --image sample-test.elf --semihosting-config enable=on,target=native --semihosting-cmdline sample-test 1 2 3
+    COMMAND sample-test-app --semihosting-cmdline sample-test 1 2 3
   )
 
 endif()
