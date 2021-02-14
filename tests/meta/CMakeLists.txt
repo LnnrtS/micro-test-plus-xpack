@@ -97,6 +97,14 @@ endif()
 
 # -----------------------------------------------------------------------------
 
+add_compile_definitions(
+    # NDEBUG provided by the toolchain definitions on release.
+    $<$<STREQUAL:"${CMAKE_BUILD_TYPE}","Debug">:DEBUG>
+    $<$<STREQUAL:"${CMAKE_BUILD_TYPE}","Debug">:TRACE>
+)
+
+# -----------------------------------------------------------------------------
+
 add_library(micro-test-plus STATIC)
 
 target_include_directories(micro-test-plus
@@ -128,17 +136,6 @@ target_sources(
 target_link_libraries(unit-test-app
   PRIVATE
     micro-test-plus
-)
-
-target_compile_definitions(
-  unit-test-app
-
-  PRIVATE
-    # HAVE_MICRO_OS_PLUS_CONFIG_H
-
-    # NDEBUG provided by the toolchain definitions on release.
-    $<$<STREQUAL:"${CMAKE_BUILD_TYPE}","Debug">:DEBUG>
-    $<$<STREQUAL:"${CMAKE_BUILD_TYPE}","Debug">:TRACE>
 )
 
 if(PLATFORM_NAME STREQUAL "stm32f4discovery")
@@ -199,17 +196,6 @@ target_sources(
 target_link_libraries(sample-test-app
   PRIVATE
     micro-test-plus
-)
-
-target_compile_definitions(
-  sample-test-app
-
-  PRIVATE
-    # HAVE_MICRO_OS_PLUS_CONFIG_H
-
-    # NDEBUG provided by the toolchain definitions on release.
-    $<$<STREQUAL:"${CMAKE_BUILD_TYPE}","Debug">:DEBUG>
-    $<$<STREQUAL:"${CMAKE_BUILD_TYPE}","Debug">:TRACE>
 )
 
 if(PLATFORM_NAME STREQUAL "stm32f4discovery")
