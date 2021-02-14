@@ -117,13 +117,6 @@ endif()
 
 add_executable(unit-test-app)
 
-set_target_properties(
-  unit-test-app
-
-  PROPERTIES
-    OUTPUT_NAME "unit-test"
-)
-
 # Source folders.
 target_sources(
   unit-test-app
@@ -186,7 +179,7 @@ if(PLATFORM_NAME STREQUAL "stm32f4discovery")
 
   add_custom_command(
     TARGET unit-test-app POST_BUILD
-    COMMAND arm-none-eabi-size --format=berkeley "unit-test.elf"
+    COMMAND arm-none-eabi-size --format=berkeley $<TARGET_FILE:unit-test-app>
   )
 
 endif()
@@ -194,13 +187,6 @@ endif()
 # -----------------------------------------------------------------------------
 
 add_executable(sample-test-app)
-
-set_target_properties(
-  sample-test-app
-
-  PROPERTIES
-    OUTPUT_NAME "sample-test"
-)
 
 # Application sources.
 target_sources(
@@ -264,7 +250,7 @@ if(PLATFORM_NAME STREQUAL "stm32f4discovery")
 
   add_custom_command(
     TARGET sample-test-app POST_BUILD
-    COMMAND arm-none-eabi-size --format=berkeley "sample-test.elf"
+    COMMAND arm-none-eabi-size --format=berkeley $<TARGET_FILE:sample-test-app>
   )
 
 endif()
