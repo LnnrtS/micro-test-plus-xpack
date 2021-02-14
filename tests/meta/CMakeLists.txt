@@ -88,6 +88,12 @@ if(PLATFORM_NAME STREQUAL "stm32f4discovery")
   )
 endif()
 
+# -----------------------------------------------------------------------------
+
+# Bare-metal executables have the .elf extension.
+if(CMAKE_SYSTEM_NAME STREQUAL "Generic")
+  set(CMAKE_EXECUTABLE_SUFFIX ".elf")
+endif()
 
 # -----------------------------------------------------------------------------
 
@@ -105,16 +111,6 @@ set_target_properties(
     OUTPUT_NAME "unit-test"
     CXX_EXTENSIONS OFF
 )
-
-# Bare-metal executables have the .elf extension.
-if(CMAKE_SYSTEM_NAME STREQUAL "Generic")
-  set_target_properties(
-    unit-test-app
-
-    PROPERTIES
-      SUFFIX ".elf"
-  )
-endif()
 
 # Source folders.
 target_sources(
@@ -198,16 +194,6 @@ set_target_properties(
     OUTPUT_NAME "sample-test"
     CXX_EXTENSIONS OFF
 )
-
-# Bare-metal executables have the .elf extension.
-if(CMAKE_SYSTEM_NAME STREQUAL "Generic")
-  set_target_properties(
-    sample-test-app
-
-    PROPERTIES
-      SUFFIX ".elf"
-  )
-endif()
 
 # Application sources.
 target_sources(
