@@ -97,8 +97,21 @@ endif()
 
 # -----------------------------------------------------------------------------
 
-# Not yet used.
-find_package(micro-os-plus-micro-test-plus REQUIRED)
+add_library(micro-test-plus STATIC)
+
+target_include_directories(micro-test-plus
+  PUBLIC
+    ${xpack_project_folder}/include
+  )
+
+target_sources(micro-test-plus
+  PRIVATE
+    ${xpack_project_folder}/src/micro-test-plus.cpp
+  )
+
+if(PLATFORM_NAME STREQUAL "stm32f4discovery")
+  target_options_micro_os_plus_platform(micro-test-plus)
+endif()
 
 # -----------------------------------------------------------------------------
 
@@ -118,15 +131,11 @@ target_sources(
 
   PRIVATE
     ${xpack_current_folder}/unit-test.cpp
-    ${xpack_project_folder}/src/micro-test-plus.cpp
 )
 
-# Include folders.
-target_include_directories(
-  unit-test-app
-
+target_link_libraries(unit-test-app
   PRIVATE
-    ${xpack_project_folder}/include
+    micro-test-plus
 )
 
 target_compile_definitions(
@@ -201,15 +210,11 @@ target_sources(
 
   PRIVATE
     ${xpack_current_folder}/sample-test.cpp
-    ${xpack_project_folder}/src/micro-test-plus.cpp
 )
 
-# Include folders.
-target_include_directories(
-  sample-test-app
-
+target_link_libraries(sample-test-app
   PRIVATE
-    ${xpack_project_folder}/include
+    micro-test-plus
 )
 
 target_compile_definitions(
