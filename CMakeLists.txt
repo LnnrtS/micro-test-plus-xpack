@@ -61,16 +61,7 @@ endif()
 if(PLATFORM_NAME STREQUAL "native")
   # No platform specific definitions so far.
 elseif(PLATFORM_NAME STREQUAL "stm32f4discovery")
-  include("${xpack_project_folder}/xpacks/micro-os-plus-platform-stm32f4discovery/meta/xpack-helper.cmake")
-  include("${xpack_project_folder}/xpacks/micro-os-plus-devices-stm32f4/meta/xpack-helper.cmake")
-  include("${xpack_project_folder}/xpacks/micro-os-plus-architecture-cortexm/meta/xpack-helper.cmake")
 
-  include("${xpack_project_folder}/xpacks/micro-os-plus-diag-trace/meta/xpack-helper.cmake")
-  include("${xpack_project_folder}/xpacks/micro-os-plus-libs-c/meta/xpack-helper.cmake")
-  include("${xpack_project_folder}/xpacks/micro-os-plus-libs-cpp/meta/xpack-helper.cmake")
-  include("${xpack_project_folder}/xpacks/micro-os-plus-semihosting/meta/xpack-helper.cmake")
-  include("${xpack_project_folder}/xpacks/micro-os-plus-startup/meta/xpack-helper.cmake")
-  include("${xpack_project_folder}/xpacks/micro-os-plus-version/meta/xpack-helper.cmake")
 
 else()
   message(FATAL_ERROR, "Unsupported PLATFORM_NAME")
@@ -121,7 +112,10 @@ target_sources(micro-test-plus
 
 # -----------------------------------------------------------------------------
 
-add_subdirectory(tests)
+if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
+  enable_testing()
+  add_subdirectory(tests)
+endif()
 
 # -----------------------------------------------------------------------------
 
