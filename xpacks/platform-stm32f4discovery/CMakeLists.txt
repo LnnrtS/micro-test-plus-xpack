@@ -73,8 +73,8 @@ add_link_options(
 
     # Including files from other packages is not very nice, but functional.
     # Use absolute paths, otherwise set -L.
-    -T${xpack_project_folder}/xpacks/micro-os-plus-platform-stm32f4discovery/linker-scripts/mem.ld
-    -T${xpack_project_folder}/xpacks/micro-os-plus-architecture-cortexm/linker-scripts/sections.ld
+    -T${CMAKE_SOURCE_DIR}/xpacks/micro-os-plus-platform-stm32f4discovery/linker-scripts/mem.ld
+    -T${CMAKE_SOURCE_DIR}/xpacks/micro-os-plus-architecture-cortexm/linker-scripts/sections.ld
 )
 
 endmacro()
@@ -82,16 +82,16 @@ set_abi()
 
 # -----------------------------------------------------------------------------
 
-include("${xpack_project_folder}/xpacks/micro-os-plus-platform-stm32f4discovery/meta/xpack-helper.cmake")
-include("${xpack_project_folder}/xpacks/micro-os-plus-devices-stm32f4/meta/xpack-helper.cmake")
-include("${xpack_project_folder}/xpacks/micro-os-plus-architecture-cortexm/meta/xpack-helper.cmake")
+include("${CMAKE_SOURCE_DIR}/xpacks/micro-os-plus-platform-stm32f4discovery/meta/xpack-helper.cmake")
+include("${CMAKE_SOURCE_DIR}/xpacks/micro-os-plus-devices-stm32f4/meta/xpack-helper.cmake")
+include("${CMAKE_SOURCE_DIR}/xpacks/micro-os-plus-architecture-cortexm/meta/xpack-helper.cmake")
 
-include("${xpack_project_folder}/xpacks/micro-os-plus-diag-trace/meta/xpack-helper.cmake")
-include("${xpack_project_folder}/xpacks/micro-os-plus-libs-c/meta/xpack-helper.cmake")
-include("${xpack_project_folder}/xpacks/micro-os-plus-libs-cpp/meta/xpack-helper.cmake")
-include("${xpack_project_folder}/xpacks/micro-os-plus-semihosting/meta/xpack-helper.cmake")
-include("${xpack_project_folder}/xpacks/micro-os-plus-startup/meta/xpack-helper.cmake")
-include("${xpack_project_folder}/xpacks/micro-os-plus-version/meta/xpack-helper.cmake")
+include("${CMAKE_SOURCE_DIR}/xpacks/micro-os-plus-diag-trace/meta/xpack-helper.cmake")
+include("${CMAKE_SOURCE_DIR}/xpacks/micro-os-plus-libs-c/meta/xpack-helper.cmake")
+include("${CMAKE_SOURCE_DIR}/xpacks/micro-os-plus-libs-cpp/meta/xpack-helper.cmake")
+include("${CMAKE_SOURCE_DIR}/xpacks/micro-os-plus-semihosting/meta/xpack-helper.cmake")
+include("${CMAKE_SOURCE_DIR}/xpacks/micro-os-plus-startup/meta/xpack-helper.cmake")
+include("${CMAKE_SOURCE_DIR}/xpacks/micro-os-plus-version/meta/xpack-helper.cmake")
 
 # -----------------------------------------------------------------------------
 

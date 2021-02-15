@@ -18,14 +18,12 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 # -----------------------------------------------------------------------------
 
-set(xpack_project_folder ${CMAKE_CURRENT_LIST_DIR})
+include("${CMAKE_SOURCE_DIR}/xpacks/micro-os-plus-build-helper/cmake/xpack-helper.cmake")
 
-include("${xpack_project_folder}/xpacks/micro-os-plus-build-helper/cmake/xpack-helper.cmake")
-
-append_cmake_prefix_path("${xpack_project_folder}")
+append_cmake_prefix_path("${CMAKE_SOURCE_DIR}")
 
 # Leave the result in PACKAGE_JSON_VERSION[*]
-parse_package_json_semver("${xpack_project_folder}/package.json")
+parse_package_json_semver("package.json")
 
 # -----------------------------------------------------------------------------
 
@@ -50,11 +48,11 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 message(STATUS "Platform name: ${PLATFORM_NAME}")
 # CMAKE_BUILD_TYPE: Debug, Release, RelWithDebInfo, MinSizeRel
 message(STATUS "Build type: ${CMAKE_BUILD_TYPE}")
-message(STATUS "Project path: ${xpack_project_folder}")
+message(STATUS "Project path: ${CMAKE_SOURCE_DIR}")
 message(STATUS "Prefix path: ${CMAKE_PREFIX_PATH}")
 
 if(PLATFORM_NAME STREQUAL "stm32f4discovery")
-  add_subdirectory("${xpack_project_folder}/xpacks/platform-stm32f4discovery/")
+  add_subdirectory("${CMAKE_SOURCE_DIR}/xpacks/platform-stm32f4discovery/")
   set_abi()
 endif()
 
@@ -102,12 +100,12 @@ add_library(micro-test-plus STATIC)
 
 target_include_directories(micro-test-plus
   PUBLIC
-    ${xpack_project_folder}/include
+    include
   )
 
 target_sources(micro-test-plus
   PRIVATE
-    ${xpack_project_folder}/src/micro-test-plus.cpp
+    src/micro-test-plus.cpp
   )
 
 # -----------------------------------------------------------------------------
