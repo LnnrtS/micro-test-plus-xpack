@@ -11,6 +11,58 @@
 
 message(STATUS "Including platform-stm32f4discovery...")
 
+# Set global properties that should be applied to any target
+# This should contain everything that defines the ABI
+
+set(platform_cpu_option
+  -mcpu=cortex-m4
+  -mthumb
+  -mfloat-abi=soft
+)
+
+set(platform_common_options
+
+  -fmessage-length=0
+  -fsigned-char
+  -ffunction-sections
+  -fdata-sections
+  -fno-move-loop-invariants
+
+  $<$<COMPILE_LANGUAGE:CXX>:-fabi-version=0>
+  # $<$<COMPILE_LANGUAGE:CXX>:-fno-exceptions>
+  $<$<COMPILE_LANGUAGE:CXX>:-fno-rtti>
+  $<$<COMPILE_LANGUAGE:CXX>:-fno-use-cxa-atexit>
+  $<$<COMPILE_LANGUAGE:CXX>:-fno-threadsafe-statics>
+
+  # -Wunused
+  # -Wuninitialized
+  # -Wall
+  # -Wextra
+  # -Wconversion
+  # -Wpointer-arith
+  # -Wshadow
+  # -Wlogical-op
+  # -Wfloat-equal
+
+  # $<$<COMPILE_LANGUAGE:CXX>:-Wctor-dtor-privacy>
+  # $<$<COMPILE_LANGUAGE:CXX>:-Wnoexcept>
+  # $<$<COMPILE_LANGUAGE:CXX>:-Wnon-virtual-dtor>
+  # $<$<COMPILE_LANGUAGE:CXX>:-Wstrict-null-sentinel>
+  # $<$<COMPILE_LANGUAGE:CXX>:-Wsign-promo>
+)
+
+add_compile_options(
+    ${platform_cpu_option}
+    ${platform_common_options}
+)
+
+add_link_options(
+  ${platform_cpu_option}
+  ${platform_common_options}
+)
+
+# -----------------------------------------------------------------------------
+
 # The preprocessor symbols are defined in micro-os-plus-platform-stm32f4discovery.
 
 function(target_sources_micro_os_plus_platform target)
@@ -55,7 +107,7 @@ function(target_compile_definitions_micro_os_plus_platform target)
       ${xpack_platform_compile_definition}
       ${xpack_device_compile_definition}
       ${xpack_device_family_compile_definition}
-      
+
       OS_USE_SEMIHOSTING_SYSCALLS
 
       $<$<STREQUAL:"${CMAKE_BUILD_TYPE}","Debug">:OS_USE_TRACE_SEMIHOSTING_DEBUG>
@@ -71,59 +123,10 @@ function(target_options_micro_os_plus_platform target)
 
   get_target_property(target_output_name "${target}" "OUTPUT_NAME")
 
-  set(platform_cpu_option 
-
-    -mcpu=cortex-m4
-    -mthumb
-    -mfloat-abi=soft
-  )
-
-  set(platform_common_options
-
-    -fmessage-length=0
-    -fsigned-char
-    -ffunction-sections
-    -fdata-sections
-    -fno-move-loop-invariants
-
-    $<$<COMPILE_LANGUAGE:CXX>:-fabi-version=0>
-    # $<$<COMPILE_LANGUAGE:CXX>:-fno-exceptions>
-    $<$<COMPILE_LANGUAGE:CXX>:-fno-rtti>
-    $<$<COMPILE_LANGUAGE:CXX>:-fno-use-cxa-atexit>
-    $<$<COMPILE_LANGUAGE:CXX>:-fno-threadsafe-statics>
-
-    # -Wunused
-    # -Wuninitialized
-    # -Wall
-    # -Wextra
-    # -Wconversion
-    # -Wpointer-arith
-    # -Wshadow
-    # -Wlogical-op
-    # -Wfloat-equal
-
-    # $<$<COMPILE_LANGUAGE:CXX>:-Wctor-dtor-privacy>
-    # $<$<COMPILE_LANGUAGE:CXX>:-Wnoexcept>
-    # $<$<COMPILE_LANGUAGE:CXX>:-Wnon-virtual-dtor>
-    # $<$<COMPILE_LANGUAGE:CXX>:-Wstrict-null-sentinel>
-    # $<$<COMPILE_LANGUAGE:CXX>:-Wsign-promo>
-  )
-
-  target_compile_options(
-    ${target}
-
-    PRIVATE
-      ${platform_cpu_option}
-      ${platform_common_options}
-  )
-
   target_link_options(
     ${target}
 
     PRIVATE
-      ${platform_cpu_option}
-      ${platform_common_options}
-
       -nostartfiles
       # nano has no exceptions.
       # -specs=nano.specs
@@ -141,4 +144,3 @@ function(target_options_micro_os_plus_platform target)
 endfunction()
 
 # -----------------------------------------------------------------------------
-

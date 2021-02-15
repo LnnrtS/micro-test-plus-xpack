@@ -117,10 +117,6 @@ target_sources(micro-test-plus
     ${xpack_project_folder}/src/micro-test-plus.cpp
   )
 
-if(PLATFORM_NAME STREQUAL "stm32f4discovery")
-  target_options_micro_os_plus_platform(micro-test-plus)
-endif()
-
 # -----------------------------------------------------------------------------
 
 add_executable(unit-test-app)
