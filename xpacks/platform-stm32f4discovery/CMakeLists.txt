@@ -14,52 +14,55 @@ message(STATUS "Including platform-stm32f4discovery...")
 # Set global properties that should be applied to any target
 # This should contain everything that defines the ABI
 
-set(platform_cpu_option
-  -mcpu=cortex-m4
-  -mthumb
-  -mfloat-abi=soft
-)
+macro(set_abi)
 
-set(platform_common_options
+  set(platform_cpu_option
+    -mcpu=cortex-m4
+    -mthumb
+    -mfloat-abi=soft
+  )
 
-  -fmessage-length=0
-  -fsigned-char
-  -ffunction-sections
-  -fdata-sections
-  -fno-move-loop-invariants
+  set(platform_common_options
 
-  $<$<COMPILE_LANGUAGE:CXX>:-fabi-version=0>
-  # $<$<COMPILE_LANGUAGE:CXX>:-fno-exceptions>
-  $<$<COMPILE_LANGUAGE:CXX>:-fno-rtti>
-  $<$<COMPILE_LANGUAGE:CXX>:-fno-use-cxa-atexit>
-  $<$<COMPILE_LANGUAGE:CXX>:-fno-threadsafe-statics>
+    -fmessage-length=0
+    -fsigned-char
+    -ffunction-sections
+    -fdata-sections
+    -fno-move-loop-invariants
 
-  # -Wunused
-  # -Wuninitialized
-  # -Wall
-  # -Wextra
-  # -Wconversion
-  # -Wpointer-arith
-  # -Wshadow
-  # -Wlogical-op
-  # -Wfloat-equal
+    $<$<COMPILE_LANGUAGE:CXX>:-fabi-version=0>
+    # $<$<COMPILE_LANGUAGE:CXX>:-fno-exceptions>
+    $<$<COMPILE_LANGUAGE:CXX>:-fno-rtti>
+    $<$<COMPILE_LANGUAGE:CXX>:-fno-use-cxa-atexit>
+    $<$<COMPILE_LANGUAGE:CXX>:-fno-threadsafe-statics>
 
-  # $<$<COMPILE_LANGUAGE:CXX>:-Wctor-dtor-privacy>
-  # $<$<COMPILE_LANGUAGE:CXX>:-Wnoexcept>
-  # $<$<COMPILE_LANGUAGE:CXX>:-Wnon-virtual-dtor>
-  # $<$<COMPILE_LANGUAGE:CXX>:-Wstrict-null-sentinel>
-  # $<$<COMPILE_LANGUAGE:CXX>:-Wsign-promo>
-)
+    # -Wunused
+    # -Wuninitialized
+    # -Wall
+    # -Wextra
+    # -Wconversion
+    # -Wpointer-arith
+    # -Wshadow
+    # -Wlogical-op
+    # -Wfloat-equal
 
-add_compile_options(
+    # $<$<COMPILE_LANGUAGE:CXX>:-Wctor-dtor-privacy>
+    # $<$<COMPILE_LANGUAGE:CXX>:-Wnoexcept>
+    # $<$<COMPILE_LANGUAGE:CXX>:-Wnon-virtual-dtor>
+    # $<$<COMPILE_LANGUAGE:CXX>:-Wstrict-null-sentinel>
+    # $<$<COMPILE_LANGUAGE:CXX>:-Wsign-promo>
+  )
+
+  add_compile_options(
+      ${platform_cpu_option}
+      ${platform_common_options}
+  )
+
+  add_link_options(
     ${platform_cpu_option}
     ${platform_common_options}
-)
-
-add_link_options(
-  ${platform_cpu_option}
-  ${platform_common_options}
-)
+  )
+endmacro()
 
 # -----------------------------------------------------------------------------
 
@@ -67,14 +70,12 @@ add_link_options(
 
 function(target_sources_micro_os_plus_platform target)
 
-  get_filename_component(xpack_this_folder ${CMAKE_CURRENT_FUNCTION_LIST_DIR} DIRECTORY)
-
   target_sources(
     ${target}
 
     PRIVATE
-      ${xpack_this_folder}/src/initialize-hardware.cpp
-      ${xpack_this_folder}/src/interrupts-handlers.cpp
+      ${CMAKE_CURRENT_FUNCTION_LIST_DIR}/src/initialize-hardware.cpp
+      ${CMAKE_CURRENT_FUNCTION_LIST_DIR}/src/interrupts-handlers.cpp
   )
 
   target_sources_micro_os_plus_platform_stm32f4discovery(${target})
@@ -83,13 +84,11 @@ endfunction()
 
 function(target_include_directories_micro_os_plus_platform target)
 
-  get_filename_component(xpack_this_folder ${CMAKE_CURRENT_FUNCTION_LIST_DIR} DIRECTORY)
-
   target_include_directories(
     ${target}
 
     PRIVATE
-      ${xpack_this_folder}/include
+      ${CMAKE_CURRENT_FUNCTION_LIST_DIR}/include
   )
 
   target_include_directories_micro_os_plus_platform_stm32f4discovery(${target})
@@ -97,8 +96,6 @@ function(target_include_directories_micro_os_plus_platform target)
 endfunction()
 
 function(target_compile_definitions_micro_os_plus_platform target)
-
-  get_filename_component(xpack_this_folder ${CMAKE_CURRENT_FUNCTION_LIST_DIR} DIRECTORY)
 
   target_compile_definitions(
     ${target}
@@ -118,8 +115,6 @@ function(target_compile_definitions_micro_os_plus_platform target)
 endfunction()
 
 function(target_options_micro_os_plus_platform target)
-
-  get_filename_component(xpack_this_folder ${CMAKE_CURRENT_FUNCTION_LIST_DIR} DIRECTORY)
 
   get_target_property(target_output_name "${target}" "OUTPUT_NAME")
 

@@ -18,9 +18,8 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 # -----------------------------------------------------------------------------
 
-get_filename_component(xpack_tests_folder ${CMAKE_CURRENT_LIST_DIR} DIRECTORY)
-get_filename_component(xpack_project_folder ${xpack_tests_folder} DIRECTORY)
-set(xpack_current_folder ${xpack_tests_folder})
+set(xpack_project_folder ${CMAKE_CURRENT_LIST_DIR})
+set(xpack_current_folder ${CMAKE_CURRENT_LIST_DIR}/tests)
 
 include("${xpack_project_folder}/xpacks/micro-os-plus-build-helper/cmake/xpack-helper.cmake")
 
@@ -55,10 +54,14 @@ message(STATUS "Build type: ${CMAKE_BUILD_TYPE}")
 message(STATUS "Project path: ${xpack_project_folder}")
 message(STATUS "Prefix path: ${CMAKE_PREFIX_PATH}")
 
+if(PLATFORM_NAME STREQUAL "stm32f4discovery")
+  add_subdirectory("${xpack_project_folder}/xpacks/platform-stm32f4discovery/")
+  set_abi()
+endif()
+
 if(PLATFORM_NAME STREQUAL "native")
   # No platform specific definitions so far.
 elseif(PLATFORM_NAME STREQUAL "stm32f4discovery")
-  include("${xpack_current_folder}/platform-stm32f4discovery/meta/xpack-helper.cmake")
   include("${xpack_project_folder}/xpacks/micro-os-plus-platform-stm32f4discovery/meta/xpack-helper.cmake")
   include("${xpack_project_folder}/xpacks/micro-os-plus-devices-stm32f4/meta/xpack-helper.cmake")
   include("${xpack_project_folder}/xpacks/micro-os-plus-architecture-cortexm/meta/xpack-helper.cmake")
